@@ -3,7 +3,7 @@ from pipeline.load import S3Load, Table
 from pipeline.utils import Level
 
 
-load_table = Table(schema='default', table_name='states_hospitalization')
+load_table = Table(schema='default', table_name='states_vaccinations')
 
 url = 'https://api.corona-zahlen.org/vaccinations/states'
 
