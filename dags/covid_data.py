@@ -65,6 +65,19 @@ raw_states_vaccinations = BashOperator(
     dag=dag
 )
 
+ods_states_vaccinations = BashOperator(
+    task_id='ods_states_vaccinations',
+    bash_command="spark-submit ~/CovidInGermanyDWH/ods/states_vaccinations/states_vaccinations.py",
+    dag=dag
+)
+
+
+ods_states_hospitalization = BashOperator(
+    task_id='ods_states_vaccinations',
+    bash_command="spark-submit ~/CovidInGermanyDWH/ods/states_vaccinations/states_hospitalization.py",
+    dag=dag
+)
+
 task_start >> [
     raw_districts_age_groups_task,
     raw_districts_cases,
@@ -75,3 +88,6 @@ task_start >> [
     raw_states_hospitalization,
     raw_states_vaccinations
 ]
+
+raw_states_vaccinations >> ods_states_vaccinations
+raw_states_hospitalization >> ods_states_hospitalization
