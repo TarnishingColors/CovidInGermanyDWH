@@ -140,6 +140,6 @@ result_df = union_multiple_dfs([
 ])
 
 
-load_table = Table(schema='default', table_name='states_vaccinations')
+load_table = Table(schema='default', table_name='states_vaccinations', periodic_column='load_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)
-hl.load_by_period(periodic_column='load_date')
+hl.load_by_period()

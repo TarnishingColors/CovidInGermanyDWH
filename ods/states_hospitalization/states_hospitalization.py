@@ -1,9 +1,7 @@
 from pipeline.extract import S3Extract
 from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
-from pipeline.utils.df_func import union_multiple_dfs
-from pyspark.sql import functions as F
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 current_date = str(datetime.today().date())
@@ -33,10 +31,6 @@ result_df = (
     .drop("state_data", "hospitalization_data")
 )
 
-
-result_df.show(truncate=False, n=60)
-
-
-load_table = Table(schema='default', table_name='states_hospitalization')
+load_table = Table(schema='default', table_name='states_hospitalization', periodic_column='hospitalization_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)
-hl.load_by_period(periodic_column='hospitalization_date')
+hl.load_by_period()
