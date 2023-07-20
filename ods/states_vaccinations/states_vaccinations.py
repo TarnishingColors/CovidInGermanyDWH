@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 
 previous_date = str((datetime.today() - timedelta(1)).date())
-ext = S3Extract("raw_states_vaccinations")
+ext = S3Extract("ods_states_vaccinations")
 df = ext.extract(file_dir=f"raw/default/states_vaccinations_{previous_date}.json")
 
 parsed_data = (

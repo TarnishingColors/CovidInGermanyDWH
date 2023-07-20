@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 
 previous_date = str((datetime.today() - timedelta(1)).date())
-ext = S3Extract("raw_districts_recovered")
+ext = S3Extract("ods_districts_recovered")
 df = ext.extract(file_dir=f"raw/default/districts_recovered_{previous_date}.json")
 
 result_df = (

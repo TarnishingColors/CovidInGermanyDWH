@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from pipeline.extract import S3Extract
 from pipeline.load import Table, HiveLoad
 from pipeline.utils import Level
-from pyspark.sql import functions as F
 
 previous_date = str((datetime.today() - timedelta(1)).date())
 ext = S3Extract("ods_vaccinations")

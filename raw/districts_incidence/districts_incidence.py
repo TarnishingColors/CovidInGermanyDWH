@@ -6,7 +6,7 @@ from raw import data_column_to_list, add_date_column
 
 load_table = Table(schema='default', table_name='districts_incidence')
 
-url = 'https://api.corona-zahlen.org/districts/history/incidence/1'
+url = 'https://api.corona-zahlen.org/districts/history/incidence/4'
 
 response = data_column_to_list(add_date_column(requests.get(url).json()))
 

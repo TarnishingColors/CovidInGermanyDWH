@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 current_date = str(datetime.today().date())
-ext = S3Extract("raw_states_hospitalization")
+ext = S3Extract("ods_states_hospitalization")
 df = ext.extract(file_dir=f"raw/default/states_hospitalization_{current_date}.json")
 
 result_df = (
