@@ -3,9 +3,10 @@ from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
 from pipeline.utils.date import get_yesterday_date
 
+
 previous_date = get_yesterday_date()
-ext = S3Extract("ods_districts_incidence")
-df = ext.extract(file_dir=f"raw/default/districts_incidence_{previous_date}.json")
+ext = S3Extract("ods_districts_deaths")
+df = ext.extract(file_dir=f"raw/default/districts_deaths_{previous_date}.json")
 
 result_df = (
     df.selectExpr(
@@ -16,19 +17,19 @@ result_df = (
     )
     .selectExpr(
         "*",
-        "EXPLODE(district_data.history) AS incidence_data",
+        "EXPLODE(district_data.history) AS deaths_data",
         "district_data.ags AS district_ags",
         "district_data.name AS district_name",
         "district_data.code AS district_code"
     )
     .selectExpr(
         "*",
-        "incidence_data.weekIncidence AS district_week_incidence",
-        "TO_DATE(incidence_data.date) AS district_incidence_date"
+        "deaths_data.deaths AS district_deaths_amount",
+        "TO_DATE(deaths_data.date) AS district_deaths_date"
     )
-    .drop("district_data", "incidence_data")
+    .drop("district_data", "deaths_data")
 )
 
-load_table = Table(schema='default', table_name='districts_incidence', periodic_column='district_incidence_date')
+load_table = Table(schema='default', table_name='districts_deaths', periodic_column='district_deaths_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)
 hl.load_by_period()

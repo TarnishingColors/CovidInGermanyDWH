@@ -1,10 +1,10 @@
-from datetime import datetime, timedelta
-
 from pipeline.extract import S3Extract
 from pipeline.load import Table, HiveLoad
 from pipeline.utils import Level
+from pipeline.utils.date import get_yesterday_date
 
-previous_date = str((datetime.today() - timedelta(1)).date())
+
+previous_date = get_yesterday_date()
 ext = S3Extract("ods_vaccinations")
 df = ext.extract(file_dir=f"raw/default/vaccinations_{previous_date}.json")
 

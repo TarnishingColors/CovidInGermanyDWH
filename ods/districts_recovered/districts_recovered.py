@@ -1,10 +1,9 @@
 from pipeline.extract import S3Extract
 from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
-from datetime import datetime, timedelta
+from pipeline.utils.date import get_yesterday_date
 
-
-previous_date = str((datetime.today() - timedelta(1)).date())
+previous_date = get_yesterday_date()
 ext = S3Extract("ods_districts_recovered")
 df = ext.extract(file_dir=f"raw/default/districts_recovered_{previous_date}.json")
 

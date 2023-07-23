@@ -1,12 +1,12 @@
 from pipeline.extract import S3Extract
 from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
+from pipeline.utils.date import get_yesterday_date
 from pipeline.utils.df_func import union_multiple_dfs
 from pyspark.sql import functions as F
-from datetime import datetime, timedelta
 
 
-previous_date = str((datetime.today() - timedelta(1)).date())
+previous_date = get_yesterday_date()
 ext = S3Extract("ods_states_vaccinations")
 df = ext.extract(file_dir=f"raw/default/states_vaccinations_{previous_date}.json")
 

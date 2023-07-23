@@ -1,10 +1,10 @@
 from pipeline.extract import S3Extract
 from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
-from datetime import datetime
+from pipeline.utils.date import get_today_date
 
 
-current_date = str(datetime.today().date())
+current_date = get_today_date()
 ext = S3Extract("ods_states_hospitalization")
 df = ext.extract(file_dir=f"raw/default/states_hospitalization_{current_date}.json")
 

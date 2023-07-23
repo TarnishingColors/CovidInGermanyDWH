@@ -1,11 +1,11 @@
 from pipeline.extract import S3Extract
 from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
-from datetime import datetime, timedelta
+from pipeline.utils.date import get_yesterday_date
 from pyspark.sql import functions as F
 
 
-previous_date = str((datetime.today() - timedelta(1)).date())
+previous_date = get_yesterday_date()
 ext = S3Extract("ods_districts_info")
 df = ext.extract(file_dir=f"raw/default/districts_info_{previous_date}.json")
 
