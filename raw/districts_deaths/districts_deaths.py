@@ -7,7 +7,7 @@ from raw import data_column_to_list, add_date_column
 load_table = Table(schema='default', table_name='districts_deaths')
 
 # for some reason with days=1 does not show data, so it's a workaround
-url = 'https://api.corona-zahlen.org/districts/history/deaths/2'
+url = 'https://api.corona-zahlen.org/districts/history/deaths/5'
 
 response = data_column_to_list(add_date_column(requests.get(url).json()))
 

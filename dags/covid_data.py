@@ -6,8 +6,8 @@ from datetime import datetime
 dag = DAG(
     "covid_in_germany",
     description="My Airflow DAG",
-    schedule_interval="15 9 * * *",
-    start_date=datetime(2023, 7, 14),
+    schedule_interval="15 11 * * *",
+    start_date=datetime(2023, 7, 22),
     catchup=False,
 )
 
@@ -66,14 +66,14 @@ raw_states_vaccinations = BashOperator(
 )
 
 raw_vaccinations = BashOperator(
-    task_id='raw_states_vaccinations',
+    task_id='raw_vaccinations',
     bash_command="spark-submit ~/CovidInGermanyDWH/raw/vaccinations/vaccinations.py",
     dag=dag
 )
 
 ods_districts_age_groups = BashOperator(
     task_id='ods_districts_age_groups',
-    bash_command="spark-submit ~/CovidInGermanyDWH/ods/districts_age_groups/districts_districts_age_groups.py",
+    bash_command="spark-submit ~/CovidInGermanyDWH/ods/districts_age_groups/districts_age_groups.py",
     dag=dag
 )
 
@@ -115,13 +115,13 @@ ods_states_vaccinations = BashOperator(
 
 
 ods_states_hospitalization = BashOperator(
-    task_id='ods_states_vaccinations',
+    task_id='ods_states_hospitalization',
     bash_command="spark-submit ~/CovidInGermanyDWH/ods/states_hospitalization/states_hospitalization.py",
     dag=dag
 )
 
 ods_vaccinations = BashOperator(
-    task_id='ods_states_vaccinations',
+    task_id='ods_vaccinations',
     bash_command="spark-submit ~/CovidInGermanyDWH/ods/vaccinations/vaccinations.py",
     dag=dag
 )

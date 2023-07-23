@@ -18,17 +18,19 @@ result_df = (
     .selectExpr(
         "*",
         "TO_DATE(vaccinations_by_day.date) AS vaccination_date",
-        "vaccinations_by_day.vaccinated",
-        "vaccinations_by_day.firstVaccination AS first_vaccination",
-        "vaccinations_by_day.secondVaccination AS second_vaccination",
-        "vaccinations_by_day.firstBoosterVaccination AS first_booster_vaccination",
-        "vaccinations_by_day.secondBoosterVaccination AS second_booster_vaccination",
-        "vaccinations_by_day.thirdBoosterVaccination AS third_booster_vaccination",
-        "vaccinations_by_day.fourthBoosterVaccination AS fourth_booster_vaccination",
-        "vaccinations_by_day.totalVacciantionOfTheDay AS total_vacciantion_by_day",
+        "CAST(vaccinations_by_day.vaccinated AS INT) AS vaccinated",
+        "CAST(vaccinations_by_day.firstVaccination AS INT) AS first_vaccination",
+        "CAST(vaccinations_by_day.secondVaccination AS INT) AS second_vaccination",
+        "CAST(vaccinations_by_day.firstBoosterVaccination AS INT) AS first_booster_vaccination",
+        "CAST(vaccinations_by_day.secondBoosterVaccination AS INT) AS second_booster_vaccination",
+        "CAST(vaccinations_by_day.thirdBoosterVaccination AS INT) AS third_booster_vaccination",
+        "CAST(vaccinations_by_day.fourthBoosterVaccination AS INT) AS fourth_booster_vaccination",
+        "CAST(vaccinations_by_day.totalVacciantionOfTheDay AS INT) AS total_vacciantion_by_day",
     )
     .drop("vaccinations_by_day")
 ).fillna(0)
+
+result_df.show(truncate=False)
 
 load_table = Table(schema='default', table_name='vaccinations', periodic_column='vaccination_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)

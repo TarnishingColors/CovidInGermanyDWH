@@ -7,7 +7,7 @@ from pipeline.utils.date import get_yesterday_date
 from pipeline.utils.df_func import union_multiple_dfs
 from pyspark.sql import functions as F
 
-previous_date = '2023-07-20'
+previous_date = get_yesterday_date()
 ext = S3Extract("ods_districts_age_groups")
 df = ext.extract(file_dir=f"raw/default/districts_age_groups_{previous_date}.json")
 
