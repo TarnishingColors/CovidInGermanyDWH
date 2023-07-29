@@ -6,8 +6,8 @@ from datetime import datetime
 dag = DAG(
     "covid_in_germany",
     description="My Airflow DAG",
-    schedule_interval="15 11 * * *",
-    start_date=datetime(2023, 7, 22),
+    schedule_interval="51 11 * * *",
+    start_date=datetime(2023, 7, 23),
     catchup=False,
 )
 

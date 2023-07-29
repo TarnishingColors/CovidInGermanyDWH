@@ -5,6 +5,7 @@ from pipeline.load import HiveLoad, Table
 from pipeline.utils import Level
 from pipeline.utils.date import get_yesterday_date
 from pipeline.utils.df_func import union_multiple_dfs
+from pyspark import StorageLevel
 from pyspark.sql import functions as F
 
 previous_date = get_yesterday_date()
@@ -19,7 +20,7 @@ raw_df = (
         "TO_DATE(meta.lastUpdate) AS last_update_date",
     )
     .withColumn('district_age_groups_date', F.to_date(F.lit(previous_date)))
-)
+).persist(StorageLevel.DISK_ONLY)
 
 first_df = (
     raw_df
@@ -132,6 +133,10 @@ sixth_df = (
 result_df = union_multiple_dfs([
     first_df, second_df, third_df, fourth_df, fifth_df, sixth_df
 ])
+
+# action to evaluate the df before unpersisting the root one
+result_df.show(truncate=False)
+raw_df.unpersist()
 
 load_table = Table(schema='default', table_name='districts_age_groups', periodic_column='district_age_groups_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)

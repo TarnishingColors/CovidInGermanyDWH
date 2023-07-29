@@ -20,7 +20,7 @@ parsed_data = (
     ).withColumn("state_code", F.col("state_data.code"))
     .withColumn("state_name", F.col("state_data.name"))
     .withColumn("state_administered_vaccinations", F.col("state_data.administeredVaccinations"))
-)
+).cache()
 
 states_first_vaccinations = parsed_data.select(
     "state_code",
@@ -138,6 +138,10 @@ result_df = union_multiple_dfs([
     states_third_booster_vaccinations,
     states_fourth_booster_vaccinations
 ])
+
+# action to evaluate the df before unpersisting the root one
+result_df.show(truncate=False)
+parsed_data.unpersist()
 
 load_table = Table(schema='default', table_name='states_vaccinations', periodic_column='load_date')
 hl = HiveLoad(level=Level.ods, df=result_df, table=load_table, spark=ext.spark)
